@@ -86,7 +86,6 @@ struct ScopeValidator<S:Scope> {
 extension ScopeValidator {
     fileprivate func validateAcyclic(_ uniqueObjectMap: [ObjectIdentifier:AnyProvider]) throws {
         func _validateAcyclic(stack: [AnyProvider], seen: inout Set<ObjectIdentifier>) throws {
-            print(seen)
             if stack.count == 0 {
                 return
             }
