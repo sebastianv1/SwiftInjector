@@ -1,11 +1,11 @@
 import Foundation
 
 public struct AnyProvider {
-    let type: Any.Type
-    let factory: (DependencyLocator) -> Any
-    let dependencies: [Any.Type]
-    let file: StaticString?
-    let line: Int?
+    public let type: Any.Type
+    public let factory: (DependencyLocator) -> Any
+    public let dependencies: [Any.Type]
+    public let file: StaticString?
+    public let line: Int?
     
     public init(_ type: Any.Type, dependencies: [Any.Type], file: StaticString? = nil, line: Int? = nil,  _ factory: @escaping (DependencyLocator) -> Any) {
         self.type = type
