@@ -194,4 +194,44 @@ static var root: Bind<Root> {
 
 Now we can build and run the app having successfully added a new object to our dependency graph!
 
+#### Expanding the object graph
+
+As we grow our app we will continue to insert more objects into our dependency graph and scope. For every new object, we'll simply create more `Bind` instances to insert them into our scope.
+
+```swift
+protocol AuthenticationService {
+    // ...
+}
+
+struct GithubRepoListView: View {
+    // ...
+}
+```
+
+And inside our `objects` property we can grow our `Group` of objects:
+
+```swift
+static var objects: some SwiftInjector.Binding {
+    Group {
+        Bind(GithubNetworkService.self) {
+            GithubNetworkService()
+        }
+            
+        Bind(AuthenticationService.self) {
+            RealAuthenticationService()
+        }
+            
+        Bind(GithubRepoListView.self, factory: GithubRepoListView.init)
+    }
+}
+```
+
+These 2 most recent bindings are worth highlighting certain aspects of using SwiftInjector that make dependency injection so easy.
+
+The first bind is an example of how we create a `Bind` instance for the type `AuthenticationService`; however, the factory is returning an instance of `RealAuthenticationService`. This means that only the `AuthenticationService` is accessible to other objects and the implementation of that protocol is completely hidden. Trying to depend on `RealAuthenticationService` will throw an exception when building the scope.
+
+The second `Bind` instance is a fun shorthand way we can use Swift's strong type system to create our bindings very quickly. Instead of using a trailing closure to construct our object, we can simply pass the `.init` function to our parameter `factory` and Swift's type system will do the rest for us!
+
+
+
 
